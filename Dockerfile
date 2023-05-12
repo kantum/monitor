@@ -17,9 +17,5 @@ FROM gcr.io/distroless/base as monitor
 WORKDIR /app
 
 COPY --from=build /build/bin/monitor monitor
-# COPY ./configs ./configs
-# COPY ./LICENSE ./
-
-EXPOSE 11029
 
 ENTRYPOINT ["./monitor"]
