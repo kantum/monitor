@@ -31,7 +31,11 @@ func sendSlackNotification(webhook string, message string) {
 	slackBodyBytes, _ := json.Marshal(slackBody)
 
 	// Send a POST request with the JSON as the body
-	req, err := http.NewRequest(http.MethodPost, webhook, bytes.NewBuffer(slackBodyBytes))
+	req, err := http.NewRequest(
+		http.MethodPost,
+		webhook,
+		bytes.NewBuffer(slackBodyBytes),
+	)
 	if err != nil {
 		return
 	}
@@ -80,7 +84,8 @@ func main() {
 
 		if httpStatus != 200 && httpStatus != 0 {
 			println("Website is down")
-			sendSlackNotification(slackWebhook, "SmartCodec is down, next check in 15 minutes.")
+			msg := "SmartCodec is down, next check in 15 minutes."
+			sendSlackNotification(slackWebhook, msg)
 			time.Sleep(15 * time.Minute)
 		}
 

@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   monitor:
+    container_name: monitor
     build: ./
     env_file:
       - .env
