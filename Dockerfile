@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.20 as build
+FROM golang:1.20 AS build
 
 WORKDIR /build
 
@@ -8,14 +8,13 @@ RUN go mod download
 COPY . .
 
 RUN mkdir -p ./bin
-RUN go generate ./...
-RUN go build -o ./bin ./cmd/... 
+RUN go generate ./... \
+ && CGO_ENABLED=0 go build -ldflags '-extldflags "-static"' -o ./bin ./cmd/...
 
 # monitor stage
-FROM gcr.io/distroless/base as monitor
+FROM scratch AS monitor
 
-WORKDIR /app
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /build/bin/monitor /
 
-COPY --from=build /build/bin/monitor monitor
-
-ENTRYPOINT ["./monitor"]
+ENTRYPOINT ["/monitor"]

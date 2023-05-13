@@ -13,7 +13,7 @@ type slackBody struct {
 }
 
 // Send a POST request to a Slack webhook
-func SendSlackNotification(webhook string, message string) {
+func PostWebhook(webhook string, message string) {
 	// Create the request body struct
 	slackBody := slackBody{Text: message}
 
